@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Habit Tracker</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2c3e50, #34495e); /* Elegant dark gradient */
+            color: #ecf0f1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow: hidden;
+        }
+
+        /* Home Button */
+        .btn-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e74c3c; /* Bold Red for Home button */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, background-color 0.3s ease;
+        }
+
+        .btn-home:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+        /* Title */
+        h1 {
+            font-size: 3.5rem;
+            color: #f39c12; /* Bold Gold */
+            margin: 60px 0 20px;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 2px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Add New Habit Button */
+        .btn-add-habit {
+            background: linear-gradient(135deg, #8e44ad, #3498db); /* Gradient Button */
+            color: #fff;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-add-habit:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Container for Habit Cards */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Bigger cards */
+            gap: 30px;
+            padding: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Habit Card Styles */
+        .habit-card {
+            background: #34495e; /* Dark grayish-blue */
+            border-radius: 15px;
+            padding: 30px; /* Increased padding for larger cards */
+            color: #fff;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            min-height: 320px; /* Minimum height of cards */
+        }
+
+        /* Hover effect for Habit Cards */
+        .habit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Habit Title */
+        .habit-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #f39c12; /* Goldish Yellow */
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Habit Info (Days done, goal, skipped) */
+        .habit-info {
+            font-size: 1.2rem;
+            color: #bdc3c7;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Button Group inside each Habit Card */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        /* Individual buttons inside Habit Cards */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, opacity 0.3s;
+            width: 100%;
+            max-width: 200px; /* Maximum button width */
+        }
+
+        /* Complete Button */
+        .btn-complete {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-complete:hover {
+            background-color: #2ecc71;
+            transform: scale(1.05);
+        }
+
+        /* Edit Button */
+        .btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #e67e22;
+            transform: scale(1.05);
+        }
+
+        /* Log Button */
+        .btn-log {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        .btn-log:hover {
+            background-color: #3498db;
+            transform: scale(1.05);
+        }
+
+        /* Delete Button */
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .btn-home {
+                top: 10px;
+                left: 10px;
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .habit-card {
+                min-height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Home Button -->
+    <a href="{{ url_for('home') }}" class="btn-home">Home</a>
+
+    <!-- Website Title -->
+    <h1>Habit Tracker</h1>
+
+    <!-- Add New Habit Button -->
+    <a href="{{ url_for('add_habit') }}" class="btn-add-habit">Add New Habit</a>
+
+    <!-- Habit Cards Container -->
+    <div class="container">
+        {% for habit in habits %}
+            <div class="habit-card">
+                <div class="habit-title">{{ habit['name'] }}</div>
+                <div class="habit-info">
+                    <small>Streak: <strong>{{ habit['days_done'] }} days</strong></small><br>
+                    <small>Goal: <strong>{{ habit['goal'] }} days</strong></small><br>
+                    <small>Days Skipped: <strong>{{ habit['days_skipped'] }}</strong></small>
+                </div>
+
+                <!-- Buttons inside Habit Card -->
+                <div class="btn-group">
+                    <a href="{{ url_for('toggle_habit', habit_id=habit['id']) }}" class="btn btn-complete">Completed today</a>
+                    <a href="{{ url_for('edit_habit', habit_id=habit['id']) }}" class="btn btn-edit">Edit</a>
+                    <a href="{{ url_for('habit_log', habit_id=habit['id']) }}" class="btn btn-log">Log</a>
+                    <a href="{{ url_for('delete_habit', habit_id=habit['id']) }}" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this habit?')">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

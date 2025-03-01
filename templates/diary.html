@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Diary App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Body and Font Styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212; /* Dark background */
+            margin: 0;
+            padding: 0;
+            color: #e0e0e0; /* Light text */
+            line-height: 1.6;
+        }
+
+        /* Home Button Styling */
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #6200ea; /* Purple */
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background-color: #3700b3; /* Darker Purple on Hover */
+            transform: translateY(-3px);
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 900px;
+            margin: 100px auto;
+            padding: 40px;
+            text-align: center;
+            background-color: #1f1f1f; /* Dark container background */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+        }
+
+        h1 {
+            font-size: 42px;
+            color: #bb86fc; /* Light purple for header */
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #e0e0e0; /* Light text color */
+            margin-top: 10px;
+        }
+
+        .action-buttons {
+            margin-top: 50px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 15px 40px;
+            margin: 12px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #03dac5; /* Teal */
+        }
+
+        .btn-primary:hover {
+            background-color: #018786; /* Darker Teal on Hover */
+            transform: translateY(-4px);
+        }
+
+        .btn-secondary {
+            background-color: #6200ea; /* Purple */
+        }
+
+        .btn-secondary:hover {
+            background-color: #3700b3; /* Darker Purple on Hover */
+            transform: translateY(-4px);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- Home Button -->
+    <a href="{{ url_for('home') }}" class="home-btn">Home</a>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome to My Diary App</h1>
+        <p>Track your thoughts, memories, and reflections in one secure place.</p>
+        <div class="action-buttons">
+            <a href="{{ url_for('add_entry') }}" class="btn btn-primary">Add Entry</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Show Entries</a>
+        </div>
+    </div>
+
+</body>
+</html>

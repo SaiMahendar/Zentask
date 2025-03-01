@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+    <div class="card p-4">
+        <h2 class="text-center mb-4">Sign Up</h2>
+        
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-danger">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <!-- First Name -->
+            <div class="mb-3">
+                <label for="firstname" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstname" name="firstname" required>
+            </div>
+
+            <!-- Last Name -->
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" required>
+            </div>
+
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <!-- Security Question -->
+            <div class="mb-3">
+                <label for="sec_question" class="form-label">Security Question</label>
+                <select class="form-select" name="sec_question" required>
+                    <option value="">Select a question...</option>
+                    <option value="What is your pet's name?">What is your pet's name?</option>
+                    <option value="What was the name of your first school?">What was the name of your first school?</option>
+                    <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                    <option value="Other">Other (Enter custom question)</option>
+                </select>
+            </div>
+
+            <!-- Custom Security Question (if "Other" selected) -->
+            <div class="mb-3" id="customQuestionDiv" style="display: none;">
+                <label for="custom_question" class="form-label">Custom Security Question</label>
+                <input type="text" class="form-control" id="custom_question" name="sec_question_other">
+            </div>
+
+            <!-- Answer -->
+            <div class="mb-3">
+                <label for="sec_answer" class="form-label">Answer</label>
+                <input type="text" class="form-control" id="sec_answer" name="sec_answer" required>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="mb-3">
+                <label for="profile_pic" class="form-label">Profile Picture</label>
+                <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="image/*" onchange="previewImage(event)">
+            </div>
+
+            <!-- Profile Picture Preview -->
+            <div class="mb-3">
+                <img id="profile_pic_preview" src="#" alt="Profile Image Preview" style="max-width: 200px; display: none;">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+        </form>
+    </div>
+
+    <!-- Script to handle profile picture preview -->
+    <script>
+        // Show custom question input if "Other" is selected
+        document.querySelector('select[name="sec_question"]').addEventListener('change', function() {
+            var customQuestionDiv = document.getElementById('customQuestionDiv');
+            if (this.value === "Other") {
+                customQuestionDiv.style.display = 'block';
+            } else {
+                customQuestionDiv.style.display = 'none';
+            }
+        });
+
+        // Preview Profile Picture before upload
+        function previewImage(event) {
+            var output = document.getElementById('profile_pic_preview');
+            output.style.display = 'block'; // Show preview
+            output.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+{% endblock %}

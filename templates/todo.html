@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tada - To-Do Remind You</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Font Awesome for the home icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Dark Theme Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #E0E0E0; /* Light text color */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #1E1E1E; /* Dark container background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #BB86FC; /* Light purple for heading */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input, textarea, button {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #333; /* Darker border */
+            background-color: #333; /* Dark input background */
+            color: #E0E0E0; /* Light text in inputs */
+        }
+
+        button {
+            background-color: #6200EE; /* Purple button */
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #3700B3; /* Darker purple on hover */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #1E1E1E; /* Dark list item background */
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: #E0E0E0; /* Light text */
+            word-wrap: break-word; /* Ensure long words break and don't overflow */
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        strong {
+            font-size: 1.2em;
+        }
+
+        /* Home Icon Styling */
+        .home-icon {
+            font-size: 30px;
+            color: #BB86FC; /* Light purple for the home icon */
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .home-icon:hover {
+            color: #3700B3; /* Darker purple on hover */
+        }
+
+        /* Back Button Styling */
+        .back-button {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #333; /* Dark background for back button */
+            border: 1px solid #6200EE; /* Purple border */
+            border-radius: 5px;
+            color: #BB86FC; /* Light purple text */
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #444; /* Slightly lighter background on hover */
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .home-icon {
+                top: 15px;
+                left: 15px;
+            }
+
+            input, textarea, button {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .home-icon {
+                font-size: 25px;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Icon -->
+    <a href="{{ url_for('home') }}" class="home-icon">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <div class="container">
+        <h1>Taskes To-Do</h1>
+
+        <!-- Back Button -->
+        <a href="javascript:void(0);" onclick="showTaskList()" class="back-button">Back to Task List</a>
+
+        <!-- Button to show Add Task form -->
+        <button id="showFormBtn" onclick="showForm()">Add Task</button>
+
+        <!-- Add Task Form -->
+        <div id="taskForm" style="display: none;">
+            <h2>Add a new task:</h2>
+            <form action="{{ url_for('todo') }}" method="POST">
+                <input type="text" name="title" placeholder="Task Title" required><br>
+                <textarea name="task" placeholder="Task Description" required></textarea><br>
+
+                <label for="subtasks">Subtasks (optional):</label><br>
+                <div id="subtaskFields"></div>
+                <button type="button" id="addSubtaskBtn" onclick="addSubtaskField()">Add Subtask</button><br>
+
+                <button type="submit" onclick="hideForm()">Add Task</button>
+            </form>
+        </div>
+
+        <!-- Task List -->
+        <div id="taskList">
+            <ol>
+                {% if tasks %}
+                    {% for task in tasks %}
+                    <li id="task-{{ loop.index0 }}">
+                        <div class="task">
+                            <h3>
+                                <input type="checkbox" 
+                                    id="task-checkbox-{{ loop.index0 }}"
+                                    {% if task['done'] %}checked{% endif %} 
+                                    onclick="completeTask({{ loop.index0 }})">
+                                {{ task.title }}: {{ task.task }}
+                            </h3>
+            
+                            <!-- Subtasks -->
+                            {% if task.subtasks %}
+                            <ul>
+                                {% for subtask in task.subtasks %}
+                                <li id="subtask-{{ loop.index0 }}-{{ loop.index }}">
+                                    <input type="checkbox" 
+                                        id="subtask-checkbox-{{ loop.index0 }}-{{ loop.index }}"
+                                        {% if subtask.done %}checked{% endif %}
+                                        onclick="completeSubtask({{ loop.index0 }}, {{ loop.index }})">
+                                    {{ subtask.subtask }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+            
+                            <!-- Task Deletion -->
+                            <form action="/delete_task/{{ loop.index0 }}" method="POST" style="display:inline;">
+                                <button type="submit">Delete Task</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                <li>No tasks available. Please add a task!</li>
+                {% endif %}
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Show the task form when "Add Task" button is clicked
+        function showForm() {
+            document.getElementById('taskForm').style.display = 'block';  // Show the form
+            document.getElementById('showFormBtn').style.display = 'none'; // Hide the "Add Task" button
+            document.getElementById('taskList').style.display = 'none';    // Hide the task list
+        }
+
+        // Hide the form and show the task list when done
+        function hideForm() {
+            document.getElementById('taskForm').style.display = 'none';  // Hide the form
+            document.getElementById('showFormBtn').style.display = 'block'; // Show the "Add Task" button
+            document.getElementById('taskList').style.display = 'block';    // Show the task list
+        }
+
+        // Back Button functionality
+        function showTaskList() {
+            document.getElementById('taskForm').style.display = 'none';  // Hide the form
+            document.getElementById('showFormBtn').style.display = 'block'; // Show the "Add Task" button
+            document.getElementById('taskList').style.display = 'block';    // Show the task list
+        }
+
+        // Add a new subtask field dynamically
+        function addSubtaskField() {
+            const subtaskDiv = document.createElement('div');
+            subtaskDiv.innerHTML = '<input type="text" name="subtask" placeholder="Subtask" required>';
+            document.getElementById('subtaskFields').appendChild(subtaskDiv);
+        }
+
+        // Complete the main task
+        function completeTask(taskIndex) {
+            var checkbox = document.querySelector(`#task-${taskIndex} input[type="checkbox"]`);
+            var isChecked = checkbox.checked;
+
+            // Send POST request to mark task as done or undone
+            fetch(`/mark_done/${taskIndex}`, {
+                method: isChecked ? 'POST' : 'DELETE',  // Choose correct method (you can use DELETE for unchecking)
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);  // Optional: Show success message
+                location.reload();  // Reload page to reflect task completion
+            });
+        }
+
+        // Complete a subtask
+        function completeSubtask(taskIndex, subtaskIndex) {
+            var checkbox = document.querySelector(`#subtask-${taskIndex}-${subtaskIndex} input[type="checkbox"]`);
+            var isChecked = checkbox.checked;
+
+            // Send POST request to mark subtask as done or undone
+            fetch(`/mark_subtask_done/${taskIndex}/${subtaskIndex}`, {
+                method: isChecked ? 'POST' : 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);  // Optional: Show success message
+                location.reload();  // Reload page to reflect subtask completion
+            });
+        }
+    </script>
+</body>
+</html>

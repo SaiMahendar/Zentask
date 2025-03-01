@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark background */
+            margin: 0;
+            padding: 0;
+            color: #E0E0E0; /* Light text */
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #1f1f1f; /* Darker container */
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #BB86FC; /* Light purple color */
+        }
+
+        /* Navigation Buttons (Back & Home) */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .nav-buttons a {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #6200EE; /* Purple background */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .nav-buttons a:hover {
+            background-color: #3700B3;
+            transform: scale(1.05);
+        }
+
+        /* Search and Sort Controls */
+        .search-sort-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #BB86FC;
+            background-color: #1f1f1f;
+            color: #E0E0E0;
+            width: 70%;
+        }
+
+        .search-input::placeholder {
+            color: #E0E0E0;
+        }
+
+        #sort-btn {
+            padding: 10px 20px;
+            background-color: #BB86FC; /* Light purple */
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #sort-btn:hover {
+            background-color: #6200EE;
+        }
+
+        /* Analysis Section */
+        .analysis-section {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .analysis-section button {
+            background-color: #03DAC5; /* Light teal */
+            color: white;
+            font-size: 18px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .analysis-section button:hover {
+            background-color: #018786;
+            transform: scale(1.05);
+        }
+
+        /* Analysis Container (Chart Area) */
+        .analysis-container {
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        .analysis-container h2 {
+            font-size: 24px;
+            color: #BB86FC;
+        }
+
+        /* Entries Section */
+        .entries {
+            margin-top: 40px;
+        }
+
+        .entries h2 {
+            font-size: 28px;
+            color: #BB86FC;
+            margin-bottom: 20px;
+        }
+
+        /* Entry Cards */
+        .entry-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .entry-card {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .entry-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .entry-card h3 {
+            font-size: 22px;
+            color: #BB86FC;
+        }
+
+        .entry-card p {
+            font-size: 16px;
+            color: #E0E0E0;
+            line-height: 1.6;
+        }
+
+        .entry-card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #03DAC5; /* Light teal */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .entry-card a:hover {
+            background-color: #018786;
+            transform: scale(1.05);
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .analysis-section button {
+                font-size: 16px;
+            }
+
+            .entry-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .entry-card {
+                padding: 15px;
+            }
+        }
+
+        /* Animations for Chart */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dashboard</h1>
+        </header>
+
+        <!-- Navigation buttons (Back & Home) -->
+        <div class="nav-buttons">
+            <a href="javascript:history.back();" class="btn btn-back">Back</a>
+            <a href="{{ url_for('home') }}" class="btn btn-home">Home</a>
+        </div>
+
+        <!-- Search and Sort Controls -->
+        <div class="search-sort-controls">
+            <input type="text" id="search-input" placeholder="Search entries..." class="search-input">
+            <button id="sort-btn" class="btn">Sort by Emotion</button>
+        </div>
+
+
+        <!-- Show Analysis Button -->
+        <div class="analysis-section">
+            <button id="show-analysis-btn" class="btn btn-primary">Show Analysis</button>
+
+            <!-- Dropdown to select chart type -->
+            <div id="chart-options" class="chart-options">
+                <label for="chart-type">Choose Chart Type: </label>
+                <select id="chart-type">
+                    <option value="bar">Bar Chart</option>
+                    <option value="line">Line Chart</option>
+                    <option value="pie">Pie Chart</option>
+                </select>
+            </div>
+
+            <!-- Canvas for the chart (hidden by default) -->
+            <div id="analysis-container" class="analysis-container">
+                <h2>Emotion and Sentiment Analysis</h2>
+                <canvas id="analysis-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- List of Entries -->
+        <section class="entries">
+            <h2>Your Diary Entries</h2>
+            {% if entries %}
+                <div class="entry-cards" id="entry-cards-container">
+                    {% for entry in entries %}
+                        <div class="entry-card" data-emotion="{{ entry.emotion }}">
+                            <h3>{{ entry.title }}</h3>
+                            <h1>{{ entry.emotion }}</h1>
+                            <p>{{ entry.content[:100] }}...</p>
+                            <a href="{{ url_for('view_entry', index=loop.index0) }}" class="btn btn-view">View Full Entry</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No entries found. Start writing your first diary entry!</p>
+            {% endif %}
+        </section>
+        
+    </div>
+
+    <script>
+        // Data for the analysis (dynamically populated by the backend)
+        const sentimentData = {{ sentiment_data | tojson }};  // Sentiment data array
+        const emotionData = {{ emotion_data | tojson }};  // Emotion data array
+    
+        // Function to create the chart based on selected chart type
+        function createChart(chartType) {
+            const ctx = document.getElementById('analysis-chart').getContext('2d');
+    
+            // Destroy the previous chart if it exists
+            if (window.analysisChart) {
+                window.analysisChart.destroy();
+            }
+    
+            // Ensure sentiment and emotion data is valid
+            if (!Array.isArray(sentimentData) || !Array.isArray(emotionData)) {
+                console.error("Invalid data: Sentiment or Emotion data is not an array.");
+                return;
+            }
+    
+            if (sentimentData.length !== emotionData.length) {
+                console.error("Sentiment data length does not match emotion data length.");
+                return;
+            }
+    
+            // Log data for debugging purposes
+            console.log("Sentiment Data:", sentimentData);
+            console.log("Emotion Data:", emotionData);
+    
+            // Create a new chart with enhanced animation and interactivity
+            window.analysisChart = new Chart(ctx, {
+                type: chartType, // Chart type: bar, line, or pie
+                data: {
+                    labels: emotionData, // Emotion categories (Happy, Sad, etc.)
+                    datasets: [{
+                        label: 'Sentiment Score (0 to 1)',
+                        data: sentimentData, // Sentiment data for each emotion
+                        backgroundColor: function(context) {
+                            const value = context.dataset.data[context.dataIndex];
+                            // Use different colors based on sentiment
+                            return value >= 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(255, 99, 132, 0.6)';
+                        },
+                        borderColor: function(context) {
+                            const value = context.dataset.data[context.dataIndex];
+                            return value >= 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)';
+                        },
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(255, 159, 64, 0.2)',  // Hover color
+                        hoverBorderColor: 'rgba(255, 159, 64, 1)',  // Hover border color
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 1000,  // Animate over 1 second
+                        easing: 'easeInOutQuart',  // Smooth animation
+                    },
+                    scales: chartType === 'bar' ? {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 0.2,
+                                min: -1,
+                                max: 1
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                                lineWidth: 0.5
+                            }
+                        }
+                    } : undefined,  // Pie and line charts don't need y-axis scales
+                    plugins: {
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw.toFixed(2)}`;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                boxWidth: 20,
+                                padding: 10
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    
+        // Button click handler to show analysis
+        document.getElementById('show-analysis-btn').addEventListener('click', function() {
+            const analysisContainer = document.getElementById('analysis-container');
+            analysisContainer.style.display = 'block';
+    
+            const chartType = document.getElementById('chart-type').value;
+            createChart(chartType);
+        });
+    
+        // Search functionality to filter entries
+        document.getElementById('search-input').addEventListener('input', function(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            const entries = document.querySelectorAll('.entry-card');
+    
+            entries.forEach(entry => {
+                const title = entry.querySelector('h3').innerText.toLowerCase();
+                const content = entry.querySelector('p').innerText.toLowerCase();
+    
+                // Show entries that match the search term
+                if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                    entry.style.display = 'block';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        });
+    
+        // Sort entries by emotion score
+        document.getElementById('sort-btn').addEventListener('click', function() {
+            const entriesContainer = document.getElementById('entry-cards-container');
+            const entries = Array.from(entriesContainer.children);
+    
+            // Sort entries based on emotion data
+            entries.sort((a, b) => {
+                const emotionA = parseFloat(a.getAttribute('data-emotion'));
+                const emotionB = parseFloat(b.getAttribute('data-emotion'));
+                return emotionB - emotionA;
+            });
+    
+            // Reorder the entries in the container
+            entries.forEach(entry => {
+                entriesContainer.appendChild(entry);
+            });
+        });
+    
+        // Additional function to dynamically change chart type based on dropdown
+        document.getElementById('chart-type').addEventListener('change', function() {
+            const selectedType = this.value;
+            const chartType = selectedType || 'bar'; // Default to 'bar' if no type is selected
+            createChart(chartType);
+        });
+    </script>
+    
+</body>
+</html>
