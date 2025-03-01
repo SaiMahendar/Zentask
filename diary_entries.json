@@ -1,0 +1,101 @@
+{
+    "ab": [
+        {
+            "title": "2024-12-25",
+            "content": "i am happy veryone left me alone",
+            "sentiment": "Positive",
+            "emotion": "sadness",
+            "attachments": [],
+            "date_created": "2024-12-25 11:28:46"
+        },
+        {
+            "title": "2024-12-25",
+            "content": "mbhvjftdyrxgfchvjkguifyutdxfhgvkjblhigukfyjcghfvn bm,jbkhlgukfyjcxhf bmv,jglukfytdjhxfhvjkgufyjdtxhfngcvjglufkyjdhgxfmhvjgukfgnchvkugfydthxfgcnhjvkufgydthxfgcjvkugfytdhxfgcjhvkuyfudthxfgnchjvkfytdxhrfhgcjftdyrxgfhcgjfutdyr",
+            "sentiment": "Neutral",
+            "emotion": "neutral",
+            "attachments": [
+                "uploads/MILLU_DRAWING.png",
+                "uploads/1660380719397.jpg"
+            ],
+            "date_created": "2024-12-25 18:38:33"
+        },
+        {
+            "title": "fasak",
+            "content": "a bad day\r\n",
+            "sentiment": "Negative",
+            "emotion": "sadness",
+            "attachments": [],
+            "date_created": "2024-12-26 12:20:27"
+        },
+        {
+            "title": "fasak",
+            "content": "a worst day\r\n",
+            "sentiment": "Negative",
+            "emotion": "disgust",
+            "attachments": [],
+            "date_created": "2024-12-26 12:27:54"
+        },
+        {
+            "title": "fasak",
+            "content": "a fun day\r\n",
+            "sentiment": "Positive",
+            "emotion": "joy",
+            "attachments": [],
+            "date_created": "2024-12-26 12:28:06"
+        },
+        {
+            "title": "good",
+            "content": "a happy day i enjoyed a lot",
+            "sentiment": "Positive",
+            "emotion": "joy",
+            "attachments": [
+                "uploads/5-Nee_Yadalo_Naaku-SenSongsMp3.Co.mp3"
+            ],
+            "date_created": "2024-12-28 18:50:47"
+        }
+    ],
+    "ad": [
+        {
+            "title": "hello",
+            "content": "i said hello all the people in my class for the first time ",
+            "sentiment": "Positive",
+            "emotion": "joy",
+            "attachments": [],
+            "date_created": "2024-12-25 11:30:25"
+        },
+        {
+            "title": "happy",
+            "content": "it was a great day",
+            "sentiment": "Positive",
+            "emotion": "joy",
+            "attachments": [],
+            "date_created": "2024-12-25 20:38:03"
+        },
+        {
+            "title": "happy",
+            "content": "it was a boring day",
+            "sentiment": "Negative",
+            "emotion": "sadness",
+            "attachments": [],
+            "date_created": "2024-12-25 20:38:29"
+        },
+        {
+            "title": "2024-12-25",
+            "content": "a very regretful day becoz of the things happened today",
+            "sentiment": "Positive",
+            "emotion": "sadness",
+            "attachments": [],
+            "date_created": "2024-12-25 20:39:15"
+        }
+    ],
+    "surya": [
+        {
+            "title": "a good day",
+            "content": "I\u2019ve been feeling like things are finally starting to come together. For the past few months, it\u2019s been a struggle. Between work and personal challenges, I\u2019ve had my fair share of doubts. But recently, something changed. I feel like I\u2019m on the brink of something new\u2014like I\u2019m starting to see the light at the end of the tunnel. My project at work is gaining momentum, and I\u2019ve been receiving positive feedback from my manager. I\u2019ve been taking small steps towards my personal goals too. I\u2019ve started meditating in the mornings, and it\u2019s helped me feel more grounded. I\u2019m also trying to focus on my health by eating better and exercising. It feels like I\u2019m finally taking control of my life again. I\u2019m excited for what\u2019s to come, and I\u2019m starting to feel hopeful about the future. I know it won\u2019t always be easy, but I\u2019m ready to face whatever challenges come my way.\r\n",
+            "sentiment": "Positive",
+            "emotion": "joy",
+            "attachments": [],
+            "date_created": "2024-12-27 01:20:01"
+        }
+    ]
+}

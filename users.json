@@ -1,0 +1,38 @@
+{
+    "ab": {
+        "firstname": "ab",
+        "lastname": "ba",
+        "email": "ab@gmail.com",
+        "password": "abb",
+        "sec_question": "What is your pet's name?",
+        "sec_answer": "abb",
+        "profile_pic": "DALLE_2023-03-26_09.02.13_-_a_greenery_background_and_enhanced_image_of_boy_face.png"
+    },
+    "ad": {
+        "firstname": "ad",
+        "lastname": "ad",
+        "email": "ad@gmail.com",
+        "password": "add",
+        "sec_question": "What is your pet's name?",
+        "sec_answer": "add",
+        "profile_pic": "DALLE_2023-03-26_08.59.47_-_a_greenery_background_and_enhanced_image_of_boy_and_face.png"
+    },
+    "SM": {
+        "firstname": "Sai",
+        "lastname": "Mahendar",
+        "email": "saimahendar2003@gmail.com",
+        "password": "Sai01",
+        "sec_question": "What is your pet's name?",
+        "sec_answer": "bull",
+        "profile_pic": "WhatsApp_Image_2024-07-27_at_15.35.23.jpeg"
+    },
+    "surya": {
+        "firstname": "surya",
+        "lastname": "kumar",
+        "email": "sury01@gmail.com",
+        "password": "surya",
+        "sec_question": "What is your pet's name?",
+        "sec_answer": "tom",
+        "profile_pic": null
+    }
+}
